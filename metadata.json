@@ -1,0 +1,7 @@
+{
+  "name": "DiveColor Pro",
+  "description": "An AI-powered tool for underwater photographers to perform one-click color correction and identify marine species in their photos.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
