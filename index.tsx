@@ -1,6 +1,7 @@
 
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
+import './index.css'; // <--- AGREGA ESTA LÍNEA (con el punto inicial)
 import App from './App';
 import LoadingSpinner from './components/LoadingSpinner';
 
