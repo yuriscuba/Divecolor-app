@@ -57,7 +57,7 @@ export const identifySpecies = async (
       model: "gemini-2.5-flash",
       contents: {
         parts: [
-          { text: "Identify the primary marine species in this image. Provide its common name, scientific name, a brief and engaging description, its typical habitat, and its conservation status. Format the response in Markdown." },
+          { text: "Identify the primary marine species in this image. Provide its common name, scientific name, a brief and engaging description, its typical habitat, and its conservation status, If there are many fish, focus only on the most prominent ones. Format the response in Markdown." },
           { inlineData: { data: base64, mimeType } }
         ]
       },
