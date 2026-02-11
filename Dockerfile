@@ -1,17 +1,25 @@
-# 1. EL MOTOR: Dile al chef que use la estufa de "Node" versión 18.
+# 1. Usar Node 18 Alpine (ligero y rápido)
 FROM node:18-alpine
 
-# 2. EL ESPACIO: Crea una mesa de trabajo llamada "app" dentro de la nube.
+# 2. Crear directorio de trabajo
 WORKDIR /app
 
-# 3. LA LISTA: Copia el archivo 'package.json' (tu lista de ingredientes).
+# 3. Copiar archivos de dependencias
 COPY package.json ./
 
-# 4. PREPARACIÓN: Instala todas las herramientas que tu app necesita.
+# 4. Instalar dependencias (incluyendo Express que añadimos antes)
 RUN npm install
 
-# 5. EL PRODUCTO: Copia todo lo demás que tienes en tu carpeta (tus códigos y el .env).
+# 5. Copiar el resto del código del proyecto
 COPY . .
 
-# 6. ENCENDIDO: ¡Dale al botón de "Start" para que la app empiece a funcionar!
-CMD ["npm", "start"]
+# 6. ¡PASO CLAVE!: Construir la aplicación (Generar la carpeta /dist)
+# Sin esto, verás el error de "file or directory not found"
+RUN npm run build
+
+# 7. Exponer el puerto que configuramos en server.js (3000)
+EXPOSE 3000
+
+# 8. Arrancar el servidor de Express que tiene los encabezados de seguridad
+CMD ["node", "server.js"]
+
