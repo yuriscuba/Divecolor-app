@@ -18,13 +18,23 @@ const App: React.FC = () => {
   const [activeFeature, setActiveFeature] = useState<Feature>('edit');
   const [isMigrating, setIsMigrating] = useState(true);
 
-  useEffect(() => {
+    useEffect(() => {
     const runMigration = async () => {
-      await migrateFromLocalStorage();
-      setIsMigrating(false);
+      try {
+        // Intenta mover los datos de la tablet a la base de datos
+        await migrateFromLocalStorage();
+      } catch (error) {
+        // Si hay un error, lo anotamos pero no nos detenemos
+        console.error("Fallo en migración:", error);
+      } finally {
+        // ¡IMPORTANTE! Esto se ejecuta SIEMPRE. 
+        // Quita la pantalla de carga y abre la app.
+        setIsMigrating(false);
+      }
     };
     runMigration();
   }, []);
+
 
   const navButtonClasses = (feature: Feature) => 
     `flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-cyan-500 ${
