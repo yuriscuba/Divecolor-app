@@ -286,11 +286,40 @@ const Editor: React.FC = () => {
   };
   
   const applyCrop = async () => {
-      const image = imgRef.current;
-      if (!image || !completedCrop) {
-          setError("Could not apply crop. Please select an area first.");
-          return;
-      }
+    const image = imgRef.current;
+    if (!image || !completedCrop) return;
+
+    const canvas = document.createElement('canvas');
+    // Usamos el factor de escala real
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+
+    canvas.width = completedCrop.width * scaleX;
+    canvas.height = completedCrop.height * scaleY;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Dibujamos la imagen original (sin filtros) en el canvas
+    ctx.drawImage(
+        image,
+        completedCrop.x * scaleX,
+        completedCrop.y * scaleY,
+        completedCrop.width * scaleX,
+        completedCrop.height * scaleY,
+        0, 0,
+        canvas.width, canvas.height
+    );
+
+    const croppedDataUrl = canvas.toDataURL('image/png');
+    
+    // Actualizamos los estados
+    setPreviewUrl(croppedDataUrl);
+    setCorrectedImage(null); // Limpiamos para que el nuevo preview sea la base
+    setCrop(undefined);
+    setIsCropping(false);
+};
+
   
       const sourceUrl = correctedImage || previewUrl;
       if (!sourceUrl) {
@@ -363,13 +392,33 @@ const Editor: React.FC = () => {
                   <>
                     {mediaType === 'image' && (
                        isCropping ? (
-                            <ReactCrop
-                                crop={crop}
-                                onChange={c => setCrop(c)}
-                                onComplete={c => setCompletedCrop(c)}
-                            >
-                                <img ref={imgRef} src={correctedImage || previewUrl} alt="Crop preview" style={filterStyle} className="max-w-full max-h-[60vh] object-contain" />
-                            </ReactCrop>
+                            // Busca esta parte en tu código y añade estas propiedades:
+<ReactCrop
+    crop={crop}
+    onChange={c => setCrop(c)}
+    onComplete={c => setCompletedCrop(c)}
+    // Añade estas 2 líneas para mejorar la precisión
+    autoRenderComponents={true} 
+    className="max-w-full" 
+>
+    <img 
+        ref={imgRef} 
+        src={correctedImage || previewUrl} 
+        alt="Crop preview" 
+        // 1. Quitamos filterStyle aquí para que el cálculo sea exacto
+        // 2. Añadimos touchAction: 'none' para evitar el movimiento contrario en móvil
+        style={{ 
+            touchAction: 'none', 
+            userSelect: 'none', 
+            WebkitUserSelect: 'none',
+            maxHeight: '60vh',
+            display: 'block'
+        }} 
+        className="max-w-full object-contain"
+        onLoad={onImageLoad} // Asegúrate de tener esta función o definirla
+    />
+</ReactCrop>
+
                         ) : (
                             <img ref={imgRef} src={correctedImage || previewUrl} alt="Edited" style={filterStyle} className="w-full h-full object-contain" />
                         )
