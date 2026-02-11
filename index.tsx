@@ -1,6 +1,6 @@
-
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
+// Asegúrate de que NO esté la línea: import './index.css';
 import App from './App';
 import LoadingSpinner from './components/LoadingSpinner';
 
