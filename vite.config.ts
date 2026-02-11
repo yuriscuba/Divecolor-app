@@ -8,15 +8,13 @@ export default defineConfig(({ mode }) => {
       server: {
         port: 3000,
         host: '0.0.0.0',
-        allowedHosts: ['divecolor-pro.onrender.com'], // <-- Añade esta línea aquí
+        allowedHosts: ['divecolor-pro.onrender.com'],
       },
-      plugins: [react()], // No olvides cerrar bien los bloques
-    };
-});
-
+      define: {
         'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
         'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
       },
+      plugins: [react()],
       resolve: {
         alias: {
           '@': path.resolve(__dirname, '.'),
@@ -24,3 +22,4 @@ export default defineConfig(({ mode }) => {
       }
     };
 });
+
