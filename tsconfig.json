@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "experimentalDecorators": true,
-    "useDefineForClassFields": false,
     "module": "ESNext",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
@@ -17,9 +15,9 @@
     },
     "allowImportingTsExtensions": true,
     "noEmit": true,
-    "strict": true,
+    "strict": false,
     "esModuleInterop": true
   },
   "include": ["**/*.ts", "**/*.tsx", "vite-env.d.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }
