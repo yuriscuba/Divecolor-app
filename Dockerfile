@@ -7,12 +7,16 @@ WORKDIR /app
 COPY package.json ./
 RUN npm install
 
+# INSTALAR EXPRESS EXPLÍCITAMENTE (faltaba en tu package.json)
+RUN npm install express
+
 # Copia el código y construye la carpeta /dist
 COPY . .
 RUN npm run build
 
-# Expone el puerto de Render
-EXPOSE 3000
+# Usa el puerto que asigna Render (no hardcodear 3000)
+ENV PORT=10000
+EXPOSE 10000
 
-# Ejecuta el servidor de Express que configuramos
+# Ejecuta el servidor de Express
 CMD ["node", "server.js"]
