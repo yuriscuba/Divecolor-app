@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai"; // Corrección de la librería oficial
-import { IdentificationResult, GroundingSource } from "./types";
+import { IdentificationResult, GroundingSource } from "../types";
 
 // VITE requiere 'import.meta.env' para leer variables en el navegador
 const API_KEY = import.meta.env.VITE_API_KEY; 
